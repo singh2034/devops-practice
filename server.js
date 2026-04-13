@@ -19,7 +19,7 @@ const server = http.createServer(async (req, res) => {
 
   requestCounter.inc();
 
-  res.end("DevOps App Running with Metrics 🚀");
+  res.end("DevOps App Running with Metrics + v2");
 });
 
 server.listen(3000, () => {
