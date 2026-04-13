@@ -1,7 +1,6 @@
 const http = require("http");
 const client = require("prom-client");
 
-// collect default metrics (CPU, memory, etc.)
 client.collectDefaultMetrics();
 
 const requestCounter = new client.Counter({
@@ -9,10 +8,13 @@ const requestCounter = new client.Counter({
   help: "Total number of requests",
 });
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
+
   if (req.url === "/metrics") {
     res.setHeader("Content-Type", client.register.contentType);
-    return res.end(client.register.metrics());
+
+    const metrics = await client.register.metrics();  // ✅ FIX
+    return res.end(metrics);
   }
 
   requestCounter.inc();
